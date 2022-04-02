@@ -1,26 +1,27 @@
 import random
 import pygame
 from pygame.sprite import Sprite
+from settings import Settings
 
 
 class Alien(Sprite):
     def __init__(self, ai_game):
-        super().__init__()
+        pygame.sprite.Sprite.__init__(self)
         self.screen = ai_game.screen
-        self.settings = ai_game.settings
+        self.image = pygame.Surface((30, 40))
         self.images = ['images/alien.png', 'images/alien2.png', 'images/alien3.png']
         self.image = pygame.image.load(random.choice(self.images))
         self.rect = self.image.get_rect()
-        self.rect.x = self.rect.width
-        self.rect.y = self.rect.height
-        self.x = float(self.rect.x)
-
-    def check_edges(self):
-        screen_rect = self.screen.get_rect()
-        if self.rect.right >= screen_rect.right or self.rect.left <= 0:
-            return True
+        self.settings = Settings()
+        self.settings.screen_width = self.screen.get_rect().width
+        self.settings.screen_height = self.screen.get_rect().height
+        self.rect.x = random.randrange(self.settings.screen_width - self.rect.width)
+        self.rect.y = random.randrange(-100, -40)
 
     def update(self):
-        self.x += (self.settings.alien_speed *
-                   self.settings.fleet_direction)
-        self.rect.x = self.x
+        self.rect.x += self.settings.speedx
+        self.rect.y += self.settings.speedy
+        if self.rect.top > self.settings.screen_height + 10 or self.rect.left \
+                < -25 or self.rect.right > self.settings.screen_width + 20:
+            self.rect.x = random.randrange(self.settings.screen_width - self.rect.width)
+            self.rect.y = random.randrange(-100, -40)

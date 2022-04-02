@@ -1,3 +1,6 @@
+import random
+
+
 class Settings():
     def __init__(self):
         self.screen_width = 1920
@@ -12,3 +15,5 @@ class Settings():
         self.alien_speed = 3.0
         self.fleet_drop_speed = 10
         self.fleet_direction = 1
+        self.speedy = random.randrange(3, 5)
+        self.speedx = random.randrange(-3, 3)
