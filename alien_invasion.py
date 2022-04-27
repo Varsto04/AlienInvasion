@@ -9,6 +9,9 @@ from ship import Ship
 from bullet import Bullet
 from alien import Alien
 from button import Button
+from explosion import Explosion
+import pygame.font
+from pygame.sprite import Group
 
 
 class AlienInvasion:
