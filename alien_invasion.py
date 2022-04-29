@@ -9,6 +9,7 @@ from ship import Ship
 from bullet import Bullet
 from alien import Alien
 from button import Button
+from button2 import Button2
 from explosion import Explosion
 import pygame.font
 from pygame.sprite import Group
@@ -35,6 +36,7 @@ class AlienInvasion:
         self.aliens = pygame.sprite.Group()
         self._create_aliens()
         self.play_button = Button(self, "Play")
+        self.stop_button = Button2(self, "Exit")
 
     def run_game(self):
         while True:
@@ -56,6 +58,15 @@ class AlienInvasion:
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
                 self._check_play_button(mouse_pos)
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos2 = pygame.mouse.get_pos()
+                self._check_stop_button(mouse_pos2)
+
+    def _check_stop_button(self, mouse_pos2):
+        button_clicked = self.stop_button.rect.collidepoint(mouse_pos2)
+        if button_clicked and not self.stats.game_active:
+            print('Warning!')
+            sys.exit()
 
     def _check_play_button(self, mouse_pos):
         button_clicked = self.play_button.rect.collidepoint(mouse_pos)
@@ -137,6 +148,8 @@ class AlienInvasion:
         self.sb.show_score()
         if not self.stats.game_active:
             self.play_button.draw_button()
+        if not self.stats.game_active:
+            self.stop_button.draw_button()
         pygame.display.flip()
 
 
