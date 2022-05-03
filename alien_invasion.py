@@ -58,13 +58,12 @@ class AlienInvasion:
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
                 self._check_play_button(mouse_pos)
-            elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos2 = pygame.mouse.get_pos()
                 self._check_stop_button(mouse_pos2)
 
     def _check_stop_button(self, mouse_pos2):
-        button_clicked = self.stop_button.rect.collidepoint(mouse_pos2)
-        if button_clicked and not self.stats.game_active:
+        button_clicked2 = self.stop_button.rect.collidepoint(mouse_pos2)
+        if button_clicked2 and not self.stats.game_active:
             print('Warning!')
             sys.exit()
 
