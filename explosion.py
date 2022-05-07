@@ -1,8 +1,11 @@
 import pygame
 from os import path
+from pygame.sprite import Sprite
 
-class Explosion():
-    def __init__(self, center, size):
+
+class Explosion(Sprite):
+    def __init__(self, center, size, ):
+        pygame.sprite.Sprite.__init__(self)
         img_dir = path.join(path.dirname(__file__), 'images')
         self.explosion_anim = {}
         self.explosion_anim['lg'] = []
@@ -10,12 +13,11 @@ class Explosion():
         for i in range(9):
             filename = 'regularExplosion0{}.png'.format(i)
             img = pygame.image.load(path.join(img_dir, filename)).convert()
-            img.set_colorkey((255, 255, 255))
-            img_lg = pygame.transform.scale(img, (75, 75))
+            img.set_colorkey((0, 0, 0))
+            img_lg = pygame.transform.scale(img, (120, 120))
             self.explosion_anim['lg'].append(img_lg)
             img_sm = pygame.transform.scale(img, (32, 32))
             self.explosion_anim['sm'].append(img_sm)
-        pygame.sprite.Sprite.__init__(self)
         self.size = size
         self.image = self.explosion_anim[self.size][0]
         self.rect = self.image.get_rect()
