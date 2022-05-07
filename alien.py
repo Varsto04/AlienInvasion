@@ -12,6 +12,8 @@ class Alien(Sprite):
         self.images = ['images/alien.png', 'images/alien2.png', 'images/alien3.png']
         self.image = pygame.image.load(random.choice(self.images))
         self.rect = self.image.get_rect()
+        self.radius = 50
+        #pygame.draw.circle(self.image, (255, 0, 0), self.rect.center, self.radius)
         self.settings = Settings()
         self.settings.screen_width = self.screen.get_rect().width
         self.settings.screen_height = self.screen.get_rect().height

@@ -134,7 +134,7 @@ class AlienInvasion:
 
     def _update_aliens(self):
         self.aliens.update()
-        if pygame.sprite.spritecollideany(self.ship, self.aliens):
+        if pygame.sprite.spritecollide(self.ship, self.aliens, False, pygame.sprite.collide_circle):
             self._ship_hit()
 
     def _update_screen(self):

@@ -11,6 +11,8 @@ class Ship(Sprite):
         self.image = pygame.image.load('images/ship3.png')
         self.image.set_colorkey((255, 255, 255))
         self.rect = self.image.get_rect()
+        self.radius = 40
+        #pygame.draw.circle(self.image, (255, 0, 0), self.rect.center, self.radius)
         self.rect.midbottom = self.screen_rect.midbottom
         self.moving_right = False
         self.moving_left = False
