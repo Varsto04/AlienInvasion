@@ -1,3 +1,5 @@
+# Frozen Jam by tgfcoder <https://twitter.com/tgfcoder> licensed under CC-BY-3
+# Art from Kenney.nl
 import sys
 from time import sleep
 import pygame
@@ -12,11 +14,14 @@ from button import Button
 from button2 import Button2
 from explosion import Explosion
 import pygame.font
+from os import path
 from pygame.sprite import Group
 
 
 class AlienInvasion:
     def __init__(self):
+        pygame.mixer.pre_init(44100, -16, 2, 1024)
+        pygame.mixer.init()
         pygame.init()
         self.settings = Settings()
         self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
@@ -29,6 +34,13 @@ class AlienInvasion:
         self.background_image = pygame.image.load(random.choice(background_images))
         self.background_image = pygame.transform.scale(self.background_image,
                                                        (self.settings.screen_width, self.settings.screen_height))
+        snd_dir = path.join(path.dirname(__file__), 'snd')
+        self.shoot_sound = pygame.mixer.Sound(path.join(snd_dir, 'pew.wav'))
+        self.expl_sounds = []
+        for snd in ['expl3.wav', 'expl6.wav']:
+            self.expl_sounds.append(pygame.mixer.Sound(path.join(snd_dir, snd)))
+        pygame.mixer.music.load(path.join(snd_dir, 'tgfcoder-FrozenJam-SeamlessLoop.ogg'))
+        pygame.mixer.music.set_volume(0.7)
         self.stats = GameStats(self)
         self.sb = Scoreboard(self)
         self.ship = Ship(self)
@@ -40,6 +52,8 @@ class AlienInvasion:
         self.stop_button = Button2(self, "Exit")
 
     def run_game(self):
+        score = 0
+        pygame.mixer.music.play(loops=-1)
         while True:
             self._check_events()
             if self.stats.game_active:
@@ -99,6 +113,7 @@ class AlienInvasion:
             self.ship.moving_left = False
 
     def _fire_bullet(self):
+        self.shoot_sound.play()
         new_bullet = Bullet(self)
         self.bullets.add(new_bullet)
 
@@ -112,6 +127,7 @@ class AlienInvasion:
         if collisions:
             self.stats.score += 1
             self.sb.prep_score()
+            random.choice(self.expl_sounds).play()
         for collision in collisions:
             explosion = Explosion(collision.rect.center, 'lg')
             self.explosions.add(explosion)
@@ -132,8 +148,8 @@ class AlienInvasion:
             self.bullets.empty()
             self.explosions.empty()
             self._create_aliens()
-            self.ship.center_ship()
-            sleep(0.5)
+            #self.ship.center_ship()
+            #sleep(0.5)
         else:
             self.stats.game_active = False
             pygame.mouse.set_visible(True)
@@ -146,6 +162,7 @@ class AlienInvasion:
         collisions = pygame.sprite.spritecollide(self.ship, self.aliens, False, pygame.sprite.collide_circle)
         if collisions:
             self._ship_hit()
+            random.choice(self.expl_sounds).play()
         for collision in collisions:
             explosion = Explosion(collision.rect.center, 'lg')
             self.explosions.add(explosion)
